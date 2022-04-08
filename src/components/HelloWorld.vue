@@ -11,7 +11,6 @@
 
 
 
-    
 
     <h3>Installed CLI Plugins</h3>
 
