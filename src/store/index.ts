@@ -4,7 +4,7 @@ import { createStore } from 'vuex'
 const store = createStore({
   state() {
     return {
-      count: 200
+      count: 250
     }
   }
 })
