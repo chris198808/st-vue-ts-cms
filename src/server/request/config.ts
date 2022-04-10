@@ -5,9 +5,9 @@
 // 测试环境：test -> 测试环境服务器
 
 // 1.手动修改 容易忘记混乱
-// const BASE_URL = "http://wwww.stone.com/dev"
-// const BASE_URL = "http://wwww.stone.com/prod"
-// const BASE_URL = "http://wwww.stone.com/test"
+// const BASE_URL = "http://httpbin.org/dev"
+// const BASE_URL = "http://httpbin.org/prod"
+// const BASE_URL = "http://httpbin.org/test"
 
 let BASE_URL = ''
 const BASE_NAME = 'VUE_APP'
@@ -19,14 +19,15 @@ const BASE_NAME = 'VUE_APP'
  * "production" 下 需要设置 publicPath: './'
  */
 if (process.env.NODE_ENV === 'development') {
-  BASE_URL = 'http://wwww.stone.com/dev'
+  // BASE_URL = 'http://httpbin.org/dev'
+  BASE_URL = 'http://httpbin.org'
 } else if (process.env.NODE_ENV === 'production') {
   // publicPath: './',
-  BASE_URL = 'http://wwww.stone.com/prod'
+  BASE_URL = 'http://httpbin.org/prod'
 } else {
-  BASE_URL = 'http://wwww.stone.com/test'
+  BASE_URL = 'http://httpbin.org/test'
 }
-console.log(BASE_URL)
+// console.log(BASE_URL)
 
 // 注意导出的形式，ESModule语法，不是对象
 export { BASE_URL, BASE_NAME }

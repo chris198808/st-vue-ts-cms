@@ -8,11 +8,32 @@ import store from './store/index'
 import App from './App.vue'
 // 自定义插件入口 global
 import global from './global'
-import './server/axios-demo'
+// import './server/axios-demo'
 // 环境变量演示
-import './server/request/config'
+// import './server/request/config'
+
+// 测试
+// import axios from 'axios'
+// axios.get('http://httpbin.org').then((res) => {
+//   console.log(res)
+// })
+
+// 封装的axios
+import stRequest from './server'
 
 // createApp(App).use(router).use(store).use(ElementPlus).mount('#app')
 createApp(App).use(router).use(store).use(global).mount('#app')
 
-console.log(process.env.VUE_APP_BASE_URL)
+stRequest.request({
+  method: 'get',
+  stInterceptors: {
+    requestInterceptor: (config) => {
+      console.log('对某一个requeste请求拦截')
+      return config
+    },
+    responseInterceptor: (res) => {
+      console.log('对某一个response请求拦截')
+      return res
+    }
+  }
+})
