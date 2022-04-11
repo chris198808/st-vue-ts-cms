@@ -1,47 +1,23 @@
 <template>
-  <router-link to="/home">首页</router-link>
-  <router-link to="/hello">hello</router-link>
-  <router-view></router-view>
-  <!-- 全局导入，不用导入和注册组件，直接使用 -->
-  <el-button type="primary">按钮</el-button>
-  <el-input v-model="$store.state.count" placeholder="" />
-  <el-card class="box-card">
-    <div v-for="o in 4" :key="o" class="text item">{{ 'List item ' + o }}</div>
-  </el-card>
+  <div class="app">
+    <login></login>
+  </div>
 </template>
 
 <script lang="ts">
 // 导入需要使用的组件
 import { defineComponent } from 'vue'
+import login from '@/views/login/login.vue'
 
-import { ElButton } from 'element-plus'
-import { ElCard } from 'element-plus'
 export default defineComponent({
   components: {
-    ElButton,
-    ElCard
+    login
   }
 })
 </script>
 
 <style lang="less">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-.text {
-  font-size: 14px;
-}
-
-.item {
-  padding: 18px 0;
-}
-
-.box-card {
-  width: 480px;
+.app {
+  height: 100%;
 }
 </style>

@@ -22,6 +22,9 @@ import global from './global'
 
 // 封装的axios
 import stRequest from './server'
+// 导入 normalize.css 规范化css
+import 'normalize.css'
+import '@/assets/css/index.less'
 
 // createApp(App).use(router).use(store).use(ElementPlus).mount('#app')
 createApp(App).use(router).use(store).use(global).mount('#app')

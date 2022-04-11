@@ -13,25 +13,23 @@
 import { App } from 'vue'
 import {
   ElButton,
-  ElInput,
-  ElTable,
-  ElAlert,
-  ElAside,
-  ElAutocomplete,
-  ElAvatar,
-  ElBacktop,
-  ElBadge
+  ElTabPane,
+  ElIcon,
+  ElTabs,
+  ElForm,
+  ElFormItem,
+  ElCheckbox,
+  ElLink
 } from 'element-plus'
 const components = [
   ElButton,
-  ElInput,
-  ElTable,
-  ElAlert,
-  ElAside,
-  ElAutocomplete,
-  ElAvatar,
-  ElBacktop,
-  ElBadge
+  ElTabPane,
+  ElIcon,
+  ElTabs,
+  ElForm,
+  ElFormItem,
+  ElCheckbox,
+  ElLink
 ]
 export default {
   install(app: App) {
