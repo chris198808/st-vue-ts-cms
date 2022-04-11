@@ -25,11 +25,14 @@ import stRequest from './server'
 
 // createApp(App).use(router).use(store).use(ElementPlus).mount('#app')
 createApp(App).use(router).use(store).use(global).mount('#app')
+
+// 自定义返回的数据类型
 type DateType = {
   data: any
   returnCode: string
   success: boolean
 }
+// 对STRequest实例对象.request方法的使用
 stRequest
   .request<DateType>({
     url: '/home/multidata',
