@@ -20,7 +20,7 @@ const BASE_NAME = 'VUE_APP'
  */
 if (process.env.NODE_ENV === 'development') {
   // BASE_URL = 'http://httpbin.org/dev'
-  BASE_URL = 'http://httpbin.org'
+  BASE_URL = 'http://123.207.32.32:8000/'
 } else if (process.env.NODE_ENV === 'production') {
   // publicPath: './',
   BASE_URL = 'http://httpbin.org/prod'

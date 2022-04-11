@@ -5,6 +5,8 @@ import store from './store/index'
 // 全局导入element-plus
 // import ElementPlus from 'element-plus'
 // import 'element-plus/dist/index.css'
+//单独引入loading 样式
+import 'element-plus/theme-chalk/el-loading.css'
 import App from './App.vue'
 // 自定义插件入口 global
 import global from './global'
@@ -23,17 +25,29 @@ import stRequest from './server'
 
 // createApp(App).use(router).use(store).use(ElementPlus).mount('#app')
 createApp(App).use(router).use(store).use(global).mount('#app')
-
-stRequest.request({
-  method: 'get',
-  stInterceptors: {
-    requestInterceptor: (config) => {
-      console.log('对某一个requeste请求拦截')
-      return config
-    },
-    responseInterceptor: (res) => {
-      console.log('对某一个response请求拦截')
-      return res
+type DateType = {
+  data: any
+  returnCode: string
+  success: boolean
+}
+stRequest
+  .request<DateType>({
+    url: '/home/multidata',
+    method: 'get',
+    stInterceptors: {
+      requestInterceptor: (config) => {
+        console.log('对某一个requeste请求拦截')
+        return config
+      },
+      responseInterceptor: (res) => {
+        console.log('对某一个response请求拦截')
+        return res
+      }
     }
-  }
-})
+    // isShow: false
+  })
+  .then((res) => {
+    console.log('data: ' + res.data)
+    console.log('returnCode: ' + res.returnCode)
+    console.log('success: ' + res.success)
+  })

@@ -22,7 +22,13 @@ module.exports = defineConfig({
     },
     plugins: [
       AutoImport({
-        resolvers: [ElementPlusResolver()]
+        /**
+         * 解决loading组件加载样式失效：
+         * 1. 添加 { importStyle: false })
+         * 2. 项目入口文件添加全局样式：
+         * import 'element-plus/theme-chalk/el-loading.css'
+         */
+        resolvers: [ElementPlusResolver({ importStyle: false })]
       }),
       Components({
         resolvers: [ElementPlusResolver()]

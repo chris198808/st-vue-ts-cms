@@ -14,6 +14,6 @@ import registerGlobalElementCpn from './register-global-element-cpn'
  */
 export default {
   install(app: App) {
-    registerGlobalElementCpn
+    registerGlobalElementCpn.install(app)
   }
 }
