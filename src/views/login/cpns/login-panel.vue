@@ -1,8 +1,8 @@
 <template>
   <div class="login-panel">
     <h2 class="title">后台管理系统</h2>
-    <el-tabs type="border-card" stretch class="demo-tabs">
-      <el-tab-pane>
+    <el-tabs type="border-card" stretch class="demo-tabs" v-model="currentTab">
+      <el-tab-pane name="accountTab">
         <!-- #label 具名插槽语法糖：# -->
         <template #label>
           <span class="custom-tabs-label">
@@ -12,7 +12,7 @@
         </template>
         <login-account ref="loginAccRef" />
       </el-tab-pane>
-      <el-tab-pane>
+      <el-tab-pane name="phoneTab">
         <!-- #label 具名插槽语法糖：# -->
         <template #label>
           <span class="custom-tabs-label">
@@ -49,6 +49,7 @@ export default defineComponent({
   },
   setup() {
     let rememberPass = ref(true)
+    let currentTab = ref('accountTab')
     /**
      * ts固定语法：拿到某个组件实例的类型
      * ref<InstanceType<typeof LoginAccount>>
@@ -57,11 +58,16 @@ export default defineComponent({
     const loginAccRef = ref<InstanceType<typeof LoginAccount>>()
     const login = () => {
       // 真正的登录处理逻辑在login-account模块中进行
-      loginAccRef.value?.verifyLogin(rememberPass)
+      if (currentTab.value === 'accountTab') {
+        loginAccRef.value?.verifyLogin(rememberPass.value)
+      } else {
+        console.log('手机登录')
+      }
     }
     return {
       rememberPass,
       loginAccRef,
+      currentTab,
       login
     }
   }

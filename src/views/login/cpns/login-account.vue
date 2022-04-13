@@ -5,10 +5,12 @@
         <el-input v-model="accountMess.name" placeholder="请输入账号" />
       </el-form-item>
       <el-form-item label="密码" prop="password">
+        <!-- 使用 show-password 属性即可得到一个可切换显示隐藏的密码框 -->
         <el-input
           v-model="accountMess.password"
-          type="password"
           placeholder="请输入密码"
+          type="password"
+          show-password
         />
       </el-form-item>
     </el-form>
@@ -18,13 +20,18 @@
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
 import { ElForm } from 'element-plus'
-import { setLocalStorage, getLocalStorage, deleteLocalStorage } from '@/utils'
+import localCache from '@/utils/localCache'
+
+import { useStore } from 'vuex'
 
 export default defineComponent({
   setup() {
+    const store = useStore()
+
     const accountMess = reactive({
-      name: '',
-      password: ''
+      // 空值合并，如果前面有值显示 有值的内容，否则显示 ''
+      name: localCache.getLocalStorage('name') ?? '',
+      password: localCache.getLocalStorage('password') ?? ''
     })
     // 实例的类型 ElForm 组件实例
     const formRef = ref<InstanceType<typeof ElForm>>()
@@ -37,14 +44,22 @@ export default defineComponent({
        */
       formRef.value?.validate((valid) => {
         if (valid) {
+          // 1. 记住密码和忘记密码
           if (rememberPass) {
-            setLocalStorage('name', accountMess.name)
-            setLocalStorage('password', accountMess.password)
+            localCache.setLocalStorage('name', accountMess.name)
+            localCache.setLocalStorage('password', accountMess.password)
           } else {
-            deleteLocalStorage('name')
-            deleteLocalStorage('password')
+            localCache.deleteLocalStorage('name')
+            localCache.deleteLocalStorage('password')
           }
-          console.log('进入真正的登录验证阶段')
+          // 2. 进入真正的登录验证阶段
+          // console.log('进入真正的登录验证阶段')
+          /**
+           * loginModule/accountLoginAction 给 login模块下的actions分发方法
+           * loginModule 跟 store/index.ts 中导出的模块 key的名字相同
+           */
+          //
+          store.dispatch('loginModule/accountLoginAction', { ...accountMess })
         }
       })
       return '验证登录'

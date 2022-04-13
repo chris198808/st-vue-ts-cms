@@ -1,6 +1,6 @@
 // main.ts 项目入口文件
 import { createApp } from 'vue'
-import router from '@/router'
+import router from './router/index'
 import store from './store/index'
 // 全局导入element-plus
 // import ElementPlus from 'element-plus'
@@ -20,12 +20,40 @@ import global from './global'
 //   console.log(res)
 // })
 
+// 封装的axios
+import stRequest from './server'
 // 导入 normalize.css 规范化css
 import 'normalize.css'
 import '@/assets/css/index.less'
-import { setupStore } from '@/store'
 
 // createApp(App).use(router).use(store).use(ElementPlus).mount('#app')
 createApp(App).use(router).use(store).use(global).mount('#app')
-// 防止用户刷新页面 vuex中的数据丢失， 每次入口函数执行,通过localCatch重新初始化vuex中用户数据
-setupStore()
+
+// 自定义返回的数据类型
+type DateType = {
+  data: any
+  returnCode: string
+  success: boolean
+}
+// 对STRequest实例对象.request方法的使用
+stRequest
+  .request<DateType>({
+    url: '/home/multidata',
+    method: 'get',
+    stInterceptors: {
+      requestInterceptor: (config) => {
+        console.log('对某一个requeste请求拦截')
+        return config
+      },
+      responseInterceptor: (res) => {
+        console.log('对某一个response请求拦截')
+        return res
+      }
+    }
+    // isShow: false
+  })
+  .then((res) => {
+    console.log('data: ' + res.data)
+    console.log('returnCode: ' + res.returnCode)
+    console.log('success: ' + res.success)
+  })

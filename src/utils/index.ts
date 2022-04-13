@@ -1,13 +1,13 @@
-import {
-  setLocalStorage,
-  getLocalStorage,
-  deleteLocalStorage,
-  clearLocalStorage
-} from './catch'
+// import {
+//   setLocalStorage,
+//   getLocalStorage,
+//   deleteLocalStorage,
+//   clearLocalStorage
+// } from './catch'
 
-export {
-  setLocalStorage,
-  getLocalStorage,
-  deleteLocalStorage,
-  clearLocalStorage
-}
+// export {
+//   setLocalStorage,
+//   getLocalStorage,
+//   deleteLocalStorage,
+//   clearLocalStorage
+// }

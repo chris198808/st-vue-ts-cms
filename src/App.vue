@@ -1,17 +1,17 @@
 <template>
   <div class="app">
-    <login></login>
+    <router-view />
   </div>
 </template>
 
 <script lang="ts">
-// 导入需要使用的组件
+// defineComponent()函数作用：vue文件类型限制和推导
 import { defineComponent } from 'vue'
-import login from '@/views/login/login.vue'
+// import login from '@/views/login/login.vue'
 
 export default defineComponent({
   components: {
-    login
+    // login
   }
 })
 </script>

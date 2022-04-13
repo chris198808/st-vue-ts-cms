@@ -12,7 +12,6 @@ declare module 'vue' {
     ElInput: typeof import('element-plus/es')['ElInput']
     ElLink: typeof import('element-plus/es')['ElLink']
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
-    'ElTabPane、': typeof import('element-plus/es')['ElTabPane、']
     ElTabs: typeof import('element-plus/es')['ElTabs']
   }
 }

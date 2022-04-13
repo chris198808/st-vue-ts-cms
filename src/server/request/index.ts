@@ -52,11 +52,11 @@ class STAxios {
             background: 'rgba(0, 0, 0, 0.7)'
           })
         }
-        console.log('所有实例都有拦截器，并且请求拦截成功~')
+        // console.log('所有实例都有拦截器，并且请求拦截成功~')
         return config
       },
       (err) => {
-        console.log('所有实例都有拦截器，并且请求拦截失败~')
+        // console.log('所有实例都有拦截器，并且请求拦截失败~')
         return err
       }
     )
@@ -65,15 +65,15 @@ class STAxios {
         // 请求成功关闭 loading
         // ?. es11 可选链， 如果前面有值，执行后面操作
         this.loading?.close()
-        console.log('所有实例都有拦截器，并且响应拦截成功~')
+        // console.log('所有实例都有拦截器，并且响应拦截成功~')
         // console.log('直接返回有效信息data: ' + res.data)
         return res.data
       },
       (err) => {
-        if (err.data.status === '404') {
-          console.log('没有当前页面~')
-        }
-        console.log('所有实例都有拦截器，并且响应拦截失败~')
+        // if (err.data.status === '404') {
+        //   console.log('没有当前页面~')
+        // }
+        // console.log('所有实例都有拦截器，并且响应拦截失败~')
         return err
       }
     )

@@ -10,7 +10,6 @@
 // const BASE_URL = "http://httpbin.org/test"
 
 let BASE_URL = ''
-const BASE_NAME = 'VUE_APP'
 // 2.根据process.env.NODE_ENV的值进行区分
 /**
  * NODE_ENV - 会是 "development"、"production" 或 "test" 中的一个。
@@ -20,7 +19,7 @@ const BASE_NAME = 'VUE_APP'
  */
 if (process.env.NODE_ENV === 'development') {
   // BASE_URL = 'http://httpbin.org/dev'
-  BASE_URL = 'http://123.207.32.32:8000/'
+  BASE_URL = '/api'
 } else if (process.env.NODE_ENV === 'production') {
   // publicPath: './',
   BASE_URL = 'http://httpbin.org/prod'
@@ -30,7 +29,7 @@ if (process.env.NODE_ENV === 'development') {
 // console.log(BASE_URL)
 
 // 注意导出的形式，ESModule语法，不是对象
-export { BASE_URL, BASE_NAME }
+export { BASE_URL }
 
 // 3.编写不同的环境变量配置文件
 /**
