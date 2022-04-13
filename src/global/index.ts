@@ -8,6 +8,7 @@
 import { App } from 'vue'
 // element-plus 局部引入的常用组件
 import registerGlobalElementCpn from './register-global-element-cpn'
+import registerGlobalElementIcon from './register-global-element-icon'
 
 /**
  * 自定义插件的入口函数
@@ -15,5 +16,6 @@ import registerGlobalElementCpn from './register-global-element-cpn'
 export default {
   install(app: App) {
     registerGlobalElementCpn.install(app)
+    registerGlobalElementIcon.install(app)
   }
 }

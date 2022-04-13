@@ -12,40 +12,24 @@
 // App<Element> 类型声明
 import { App } from 'vue'
 import {
-  ElButton,
-  ElTabPane,
-  ElIcon,
-  ElTabs,
-  ElForm,
-  ElFormItem,
-  ElCheckbox,
-  ElLink,
-  ElContainer,
-  ElAside,
-  ElHeader,
-  ElMain,
-  ElMenu,
-  ElSubMenu,
-  ElMenuItem,
-  ElMenuItemGroup
-} from 'element-plus'
+  Expand,
+  Fold,
+  Monitor,
+  Setting,
+  Goods,
+  ChatLineRound,
+  Menu,
+  MessageBox
+} from '@element-plus/icons-vue'
 const components = [
-  ElButton,
-  ElTabPane,
-  ElIcon,
-  ElTabs,
-  ElForm,
-  ElFormItem,
-  ElCheckbox,
-  ElLink,
-  ElContainer,
-  ElAside,
-  ElHeader,
-  ElMain,
-  ElMenu,
-  ElSubMenu,
-  ElMenuItem,
-  ElMenuItemGroup
+  Expand,
+  Fold,
+  Monitor,
+  Setting,
+  Goods,
+  ChatLineRound,
+  Menu,
+  MessageBox
 ]
 export default {
   install(app: App) {

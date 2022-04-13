@@ -5,6 +5,7 @@ import store from './store/index'
 // 全局导入element-plus
 // import ElementPlus from 'element-plus'
 // import 'element-plus/dist/index.css'
+
 //单独引入loading 样式
 import 'element-plus/theme-chalk/el-loading.css'
 import App from './App.vue'
