@@ -1,18 +1,26 @@
 <template>
   <div class="department">
-    <h2>department</h2>
+    <st-form v-bind="searchConfig" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-
+import StForm from '@/base-ui'
+import searchConfig from './config/search.config'
 export default defineComponent({
   name: 'department',
+  components: {
+    StForm
+  },
   setup() {
-    return {}
+    searchConfig
+
+    return {
+      searchConfig
+    }
   }
 })
 </script>
 
-<style scoped></style>
+<style lang="less" scoped></style>

@@ -1,20 +1,27 @@
 <template>
   <div class="nav-header">
-    <div class="fold" @click="changFold">
+    <div class="header-left" @click="changFold">
       <template v-if="fold">
-        <el-icon><fold /> </el-icon>
+        <el-icon class="fold"><fold /> </el-icon>
       </template>
       <template v-else>
-        <el-icon><expand /> </el-icon>
+        <el-icon><expand class="fold" /> </el-icon>
       </template>
+      <span class="crumbs">面包屑/二级</span>
     </div>
+
+    <div class="header-right"><user-info /></div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
+import UserInfo from './user-info.vue'
 
 export default defineComponent({
+  components: {
+    UserInfo
+  },
   emits: ['changeFold'],
   setup(props, { emit }) {
     const fold = ref(false)
@@ -36,9 +43,26 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.fold {
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
+.nav-header {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  .header-left {
+    display: flex;
+    align-items: center;
+    .fold {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+    }
+    .crumbs {
+      padding-left: 8px;
+    }
+  }
+  .header-right {
+  }
 }
 </style>

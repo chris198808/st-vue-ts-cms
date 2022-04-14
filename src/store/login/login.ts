@@ -1,14 +1,15 @@
 import { Module } from 'vuex'
 import router from '@/router'
 import localCache from '@/utils/localCache'
+import mapMenuToRouter from '@/utils/map-menu'
 import { IloginState } from './type'
 import { IRootState } from '../type'
+import { IAccountData } from '@/server/login/type'
 import {
   accountLoginRequest,
   getUserInfo,
   getUserRoles
 } from '@/server/login/login'
-import { IAccountData } from '@/server/login/type'
 const loginModule: Module<IloginState, IRootState> = {
   // 开启模块命名空间
   namespaced: true,
@@ -38,6 +39,11 @@ const loginModule: Module<IloginState, IRootState> = {
     },
     initUserMenus(state, usermenus) {
       state.usermenus = usermenus
+      // 根据匹配到的用户菜单，动态的添加路由
+      mapMenuToRouter(usermenus).forEach((route) => {
+        // router.addRoute(parentRouterName, route) 添加一条新的路由记录作为现有路由的子路由
+        router.addRoute('main', route)
+      })
     }
   },
   actions: {

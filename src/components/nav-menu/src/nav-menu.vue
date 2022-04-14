@@ -25,7 +25,10 @@
               </template>
             </template>
             <template v-for="childItem in item.children" :key="childItem.id"
-              ><el-menu-item :index="childItem.id + ''">
+              ><el-menu-item
+                :index="childItem.id + ''"
+                @click="btnMenu(childItem)"
+              >
                 <template #title>
                   <i v-if="childItem.icon" :class="childItem.icon"></i>
                   {{ childItem.name }}
@@ -51,6 +54,7 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 export default defineComponent({
   props: {
     isCollapse: {
@@ -60,12 +64,17 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
+    const router = useRouter()
     const usermenus = computed(() => {
       return store.state.loginModule.usermenus
     })
-
+    const btnMenu = (childItem: any) => {
+      console.log('----' + childItem.url)
+      router.push(childItem.url ?? '/not-find')
+    }
     return {
-      usermenus
+      usermenus,
+      btnMenu
     }
   }
 })

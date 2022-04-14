@@ -8,7 +8,9 @@
         <el-header>
           <nav-header @changeFold="changeCollapse" />
         </el-header>
-        <el-main class="page-content">Main ChatLineRound </el-main>
+        <div class="page-info">
+          <router-view />
+        </div>
       </el-container>
     </el-container>
   </div>

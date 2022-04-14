@@ -1,5 +1,5 @@
 <template>
-  <div>user</div>
+  <div>file not find~</div>
 </template>
 
 <script lang="ts">

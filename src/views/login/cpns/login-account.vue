@@ -72,9 +72,9 @@ export default defineComponent({
           trigger: 'blur'
         },
         {
-          min: 6,
+          min: 3,
           max: 8,
-          message: '账号长度需要6~8位',
+          message: '账号长度需要3~8位',
           trigger: 'blur'
         }
       ],
