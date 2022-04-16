@@ -1,6 +1,7 @@
 type typeInfo = 'text' | 'password' | 'select' | 'datepicker'
 export interface IFormConfig {
   // 基本属性
+  field: string
   label: string
   typeInfo: typeInfo
   placeholder?: string

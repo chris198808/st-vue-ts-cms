@@ -1,6 +1,7 @@
 <template>
   <div class="form">
     <div class="search">
+      <slot name="title"></slot>
       <!-- label-width="120px" 对应  el-form-item label="用户名" 宽度-->
       <el-form class="el-form" :label-width="labelWidth">
         <el-row>
@@ -15,7 +16,11 @@
               >
                 <!-- 1. text 类型 -->
                 <template v-if="item.typeInfo === 'text'">
-                  <el-input type="text" :placeholder="item.placeholder" />
+                  <el-input
+                    type="text"
+                    :placeholder="item.placeholder"
+                    v-model="formData[`${item.field}`]"
+                  />
                 </template>
                 <!-- 2. password 类型 -->
                 <template v-if="item.typeInfo === 'password'">
@@ -23,6 +28,7 @@
                     type="password"
                     :placeholder="item.placeholder"
                     show-password
+                    v-model="formData[`${item.field}`]"
                   />
                 </template>
                 <!-- 3. select 类型 -->
@@ -30,6 +36,7 @@
                   <el-select
                     :placeholder="item.placeholder"
                     style="width: 100%"
+                    v-model="formData[`${item.field}`]"
                   >
                     <el-option
                       v-for="o in item.options"
@@ -45,6 +52,7 @@
                     type="date"
                     v-bind="item.otherProps"
                     style="width: 100%"
+                    v-model="formData[`${item.field}`]"
                   />
                 </template>
               </el-form-item>
@@ -52,15 +60,21 @@
           </template>
         </el-row>
       </el-form>
+      <slot name="other"></slot>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
-import { IFormConfig } from '@/base-ui/type'
+import { defineComponent, PropType, ref, watch } from 'vue'
+import { IFormConfig } from '@/base-ui/form/type'
+import { IFormData } from '@/components/search-page/type'
 export default defineComponent({
   props: {
+    modelValue: {
+      type: Object as PropType<IFormData>,
+      require: true
+    },
     formConfig: {
       // as 断言，将数组类型 替换成 IformItemProps[]的数组类型
       // PropType 它的作用是对父组件传递过来的值/参数（prop）作类型检查
@@ -87,8 +101,15 @@ export default defineComponent({
       })
     }
   },
-  setup() {
-    return {}
+  emits: ['update:modelValue'],
+  setup(props, { emit }) {
+    const formData = ref({ ...props.modelValue })
+    watch(formData.value, (newValue) => {
+      emit('update:modelValue', newValue)
+    })
+    return {
+      formData
+    }
   }
 })
 </script>
@@ -97,11 +118,13 @@ export default defineComponent({
 .form {
   width: 100%;
   .search {
-    display: flex;
     background-color: #f4f4f7;
     margin: 0 10px;
     padding-top: 22px;
     border-radius: 5px;
+    .el-form {
+      display: flex;
+    }
   }
 }
 </style>

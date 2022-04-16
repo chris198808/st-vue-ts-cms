@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import localCache from '@/utils/localCache'
+import { firstPage } from '@/utils/map-menu'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -39,6 +40,9 @@ router.beforeEach((to) => {
   }
   // console.log(router.getRoutes())
   // console.log(to)
+  if (to.path === '/main') {
+    return firstPage
+  }
 })
 
 export default router

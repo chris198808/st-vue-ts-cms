@@ -1,13 +1,17 @@
 <template>
   <div class="nav-header">
-    <div class="header-left" @click="changFold">
-      <template v-if="fold">
-        <el-icon class="fold"><fold /> </el-icon>
-      </template>
-      <template v-else>
-        <el-icon><expand class="fold" /> </el-icon>
-      </template>
-      <span class="crumbs">面包屑/二级</span>
+    <div class="header-left">
+      <span class="fold" @click="changFold">
+        <template v-if="fold">
+          <el-icon class="fold"><fold /> </el-icon>
+        </template>
+        <template v-else>
+          <el-icon><expand class="fold" /> </el-icon>
+        </template>
+      </span>
+      <span class="crumbs">
+        <s-t-breadcrumb :breadcrumbs="breadcrumbs" />
+      </span>
     </div>
 
     <div class="header-right"><user-info /></div>
@@ -15,15 +19,27 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
+import { getBreadCrumb } from '@/utils/map-menu'
+import STBreadcrumb from '@/base-ui/breadcrumb'
 import UserInfo from './user-info.vue'
 
 export default defineComponent({
   components: {
-    UserInfo
+    UserInfo,
+    STBreadcrumb
   },
   emits: ['changeFold'],
   setup(props, { emit }) {
+    const breadcrumbs = computed(() => {
+      const store = useStore()
+      const route = useRoute()
+      const usermenu = store.state.loginModule.usermenus
+      const currentPate = route.path
+      return getBreadCrumb(usermenu, currentPate)
+    })
     const fold = ref(false)
     /**
      * 向父组件main.vue 发射一个事件 携带参数 flod ,目的有两个。
@@ -36,6 +52,8 @@ export default defineComponent({
     }
     return {
       fold,
+      breadcrumbs,
+
       changFold
     }
   }
@@ -53,9 +71,9 @@ export default defineComponent({
     display: flex;
     align-items: center;
     .fold {
-      display: inline-block;
-      width: 30px;
-      height: 30px;
+      width: 18px;
+      height: 18px;
+      vertical-align: middle;
       cursor: pointer;
     }
     .crumbs {

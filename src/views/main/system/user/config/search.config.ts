@@ -14,12 +14,6 @@ const searchConfig: IForm = {
       placeholder: '请输入用户名'
     },
     {
-      field: 'password',
-      label: '密码',
-      typeInfo: 'password',
-      placeholder: '请输入密码'
-    },
-    {
       field: 'sport',
       label: '喜欢的运动',
       typeInfo: 'select',

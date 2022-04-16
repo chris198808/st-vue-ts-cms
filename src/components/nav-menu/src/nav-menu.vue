@@ -11,7 +11,7 @@
       active-text-color="#286fc3"
       background-color="#041630"
       text-color="#8d98a6"
-      default-active="2"
+      :default-active="getMenu.id + ''"
       :collapse="isCollapse"
     >
       <template v-for="item in usermenus" key="item.id">
@@ -26,6 +26,7 @@
             </template>
             <template v-for="childItem in item.children" :key="childItem.id"
               ><el-menu-item
+                class="el-menu-item"
                 :index="childItem.id + ''"
                 @click="btnMenu(childItem)"
               >
@@ -54,7 +55,8 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import { getMenuFormPath } from '@/utils/map-menu'
 export default defineComponent({
   props: {
     isCollapse: {
@@ -65,15 +67,22 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const router = useRouter()
+    const route = useRoute()
+    // 获取当前路径
+    const currentPath = route.path
     const usermenus = computed(() => {
       return store.state.loginModule.usermenus
     })
+    // 根据当前路径匹配到当前菜单
+    const getMenu = computed(() => {
+      return getMenuFormPath(usermenus.value, currentPath)
+    })
     const btnMenu = (childItem: any) => {
-      console.log('----' + childItem.url)
       router.push(childItem.url ?? '/not-find')
     }
     return {
       usermenus,
+      getMenu,
       btnMenu
     }
   }
@@ -107,6 +116,7 @@ export default defineComponent({
 
   .el-menu {
     border-right: none;
+    background-color: #133d68 !important;
   }
 
   // 目录
@@ -115,7 +125,7 @@ export default defineComponent({
     // 二级菜单 ( 默认背景 )
     .el-menu-item {
       padding-left: 50px !important;
-      background-color: #0c2135 !important;
+      background-color: #133d68 !important;
     }
   }
 

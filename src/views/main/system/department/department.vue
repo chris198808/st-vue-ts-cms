@@ -1,21 +1,20 @@
 <template>
   <div class="department">
-    <st-form v-bind="searchConfig" />
+    <search-page :searchConfig="searchConfig" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import StForm from '@/base-ui'
 import searchConfig from './config/search.config'
+import SearchPage from '@/components/search-page'
+
 export default defineComponent({
   name: 'department',
   components: {
-    StForm
+    SearchPage
   },
   setup() {
-    searchConfig
-
     return {
       searchConfig
     }
