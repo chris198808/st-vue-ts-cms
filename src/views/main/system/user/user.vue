@@ -3,7 +3,18 @@
     <search-page :searchConfig="searchConfig" />
     <st-table :userlists="userlists" :tableData="tableData">
       <template #status="scope">
-        <el-button type="">{{ scope.row.enable ? '启用' : '停用' }}</el-button>
+        <el-button
+          :type="scope.row.enable ? 'success' : 'danger'"
+          size="small"
+          plain="true"
+          >{{ scope.row.enable ? '启用' : '停用' }}</el-button
+        >
+      </template>
+      <template #createAt="scope">
+        {{ $filter.formateUtc(scope.row.createAt) }}
+      </template>
+      <template #updateAt="scope">
+        {{ $filter.formateUtc(scope.row.updateAt) }}
       </template>
     </st-table>
   </div>

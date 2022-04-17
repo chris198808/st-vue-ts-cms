@@ -19,7 +19,6 @@
 <script lang="ts">
 import { defineComponent, Ref, ref } from 'vue'
 import StForm from '@/base-ui/form'
-import { IFormData } from './type'
 export default defineComponent({
   props: {
     searchConfig: {
@@ -31,7 +30,7 @@ export default defineComponent({
     StForm
   },
   setup() {
-    const formData: Ref<IFormData> = ref({
+    const formData: any = ref({
       // 以下字段必须和配置文件中的 field 相同，为了确定 from中绑定的字段
       id: '',
       password: '',
