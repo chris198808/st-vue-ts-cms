@@ -8,19 +8,23 @@ import localCache from '@/utils/localCache'
 export default new STAxios({
   // 每个实例可以有自己的 BASE_URL, BASE_NAME
   baseURL: BASE_URL,
-  stInterceptors: {
+  interceptors: {
     requestInterceptor: (config) => {
+      // 携带token的拦截
       const token = localCache.getLocalStorage('token')
-      // 拦截token
       if (token) {
         config.headers = { Authorization: `Bearer ${token}` }
       }
-      // console.log('实例对象拦截请求成功')
       return config
     },
+    requestInterceptorCatch: (err) => {
+      return err
+    },
     responseInterceptor: (res) => {
-      // console.log('实例对象拦截响应成功')
       return res
+    },
+    responseInterceptorCatch: (err) => {
+      return err
     }
   }
 })

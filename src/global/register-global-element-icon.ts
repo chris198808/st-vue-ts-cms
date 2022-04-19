@@ -20,7 +20,10 @@ import {
   ChatLineRound,
   Menu,
   MessageBox,
-  ArrowDown
+  ArrowDown,
+  Refresh,
+  Edit,
+  Delete
 } from '@element-plus/icons-vue'
 const components = [
   Expand,
@@ -31,7 +34,10 @@ const components = [
   ChatLineRound,
   Menu,
   MessageBox,
-  ArrowDown
+  ArrowDown,
+  Refresh,
+  Edit,
+  Delete
 ]
 export default {
   install(app: App) {

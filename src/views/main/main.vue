@@ -9,7 +9,9 @@
           <nav-header @changeFold="changeCollapse" />
         </el-header>
         <div class="page-info">
-          <router-view />
+          <el-scrollbar>
+            <router-view />
+          </el-scrollbar>
         </div>
       </el-container>
     </el-container>
@@ -51,6 +53,9 @@ export default defineComponent({
 .main-content,
 .page {
   height: 100%;
+  .page-info {
+    overflow: scroll;
+  }
 }
 
 .page-content {

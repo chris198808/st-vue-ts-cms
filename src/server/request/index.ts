@@ -1,119 +1,128 @@
 import axios from 'axios'
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { ElLoading } from 'element-plus'
-/**
- * 2.对实例对象中config属性的扩展，增加了一个 STInterceptors 类型
- */
-//  <T = AxiosResponse> 泛型默认值为 AxiosResponse
-interface STInterceptors<T = AxiosResponse> {
-  requestInterceptor?: (config: AxiosRequestConfig) => AxiosRequestConfig
-  requestInterceptorCatch?: (err: any) => any
-  responseInterceptor?: (res: T) => T
-  responseInterceptorCatch?: (err: any) => any
-}
-// 3.扩展原先的config对象可以添加 interceptor，isShow 属性
-interface STRequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
-  // interceptors参数可以不传
-  stInterceptors?: STInterceptors<T>
-  isShow?: boolean
-}
-// 1.封装自己的Axios类
-class STAxios {
-  instance: AxiosInstance
-  stInterceptors?: STInterceptors
-  // 控制loading的显示隐藏
-  loading?: any
-  isShow?: boolean
-  constructor(config: STRequestConfig) {
-    // 如果需要可实现多个实例对象
-    this.instance = axios.create(config)
-    this.stInterceptors = config.stInterceptors
-    // config.isShow ?? true 空值合并运算符， 如果 config.isShow 为空设置默认值为 true
-    this.isShow = config.isShow ?? true
+import type { AxiosInstance } from 'axios'
+import type { STRequestInterceptors, STRequestConfig } from './type'
 
-    // 4.1.给当前实例添加所有拦截器
+import { ElLoading } from 'element-plus'
+import { LoadingInstance } from 'element-plus/lib/components/loading/src/loading'
+
+const DEAFULT_LOADING = true
+
+class STRequest {
+  instance: AxiosInstance
+  interceptors?: STRequestInterceptors
+  showLoading: boolean
+  loading?: LoadingInstance
+
+  constructor(config: STRequestConfig) {
+    // 创建axios实例
+    this.instance = axios.create(config)
+
+    // 保存基本信息
+    this.showLoading = config.showLoading ?? DEAFULT_LOADING
+    this.interceptors = config.interceptors
+
+    // 使用拦截器
+    // 1.从config中取出的拦截器是对应的实例的拦截器
     this.instance.interceptors.request.use(
-      // ?.可选链 拦截器存在，执行后面的方法
-      this.stInterceptors?.requestInterceptor,
-      this.stInterceptors?.requestInterceptorCatch
+      this.interceptors?.requestInterceptor,
+      this.interceptors?.requestInterceptorCatch
     )
     this.instance.interceptors.response.use(
-      this.stInterceptors?.responseInterceptor,
-      this.stInterceptors?.responseInterceptorCatch
+      this.interceptors?.responseInterceptor,
+      this.interceptors?.responseInterceptorCatch
     )
-    // 4.2.给所有实例添加所有拦截器
+
+    // 2.添加所有的实例都有的拦截器
     this.instance.interceptors.request.use(
       (config) => {
-        // 请求数据过程中显示 loading
-        if (this.isShow) {
+        if (this.showLoading) {
           this.loading = ElLoading.service({
             lock: true,
-            text: 'Loading',
-            background: 'rgba(0, 0, 0, 0.7)'
+            text: '正在请求数据....',
+            background: 'rgba(0, 0, 0, 0.5)'
           })
         }
-        // console.log('所有实例都有拦截器，并且请求拦截成功~')
         return config
       },
       (err) => {
-        // console.log('所有实例都有拦截器，并且请求拦截失败~')
         return err
       }
     )
+
     this.instance.interceptors.response.use(
       (res) => {
-        // 请求成功关闭 loading
-        // ?. es11 可选链， 如果前面有值，执行后面操作
+        // 将loading移除
         this.loading?.close()
-        // console.log('所有实例都有拦截器，并且响应拦截成功~')
-        // console.log('直接返回有效信息data: ' + res.data)
-        return res.data
+
+        const data = res.data
+        if (data.returnCode === '-1001') {
+          console.log('请求失败~, 错误信息')
+        } else {
+          return data
+        }
       },
       (err) => {
-        // if (err.data.status === '404') {
-        //   console.log('没有当前页面~')
-        // }
-        // console.log('所有实例都有拦截器，并且响应拦截失败~')
+        // 将loading移除
+        this.loading?.close()
+
+        // 例子: 判断不同的HttpErrorCode显示不同的错误信息
+        if (err.response.status === 404) {
+          console.log('404的错误~')
+        }
         return err
       }
     )
   }
-  request<T>(config: STRequestConfig<T>): Promise<T> {
-    // request(config: STRequestConfig) {
+
+  request<T = any>(config: STRequestConfig<T>): Promise<T> {
     return new Promise((resolve, reject) => {
-      // 4.3.1 对单个请求的拦截处理
-      if (config.stInterceptors?.requestInterceptor) {
-        // 将执行了的requestInterceptor的返回值赋值给config
-        config = config.stInterceptors.requestInterceptor(config)
+      // 1.单个请求对请求config的处理
+      if (config.interceptors?.requestInterceptor) {
+        config = config.interceptors.requestInterceptor(config)
       }
-      // 4.3 某个实例的单独请求拦截
+
+      // 2.判断是否需要显示loading
+      if (config.showLoading === false) {
+        this.showLoading = config.showLoading
+      }
+
       this.instance
-        // request<T = any, R = AxiosResponse<T>, D = any> 默认修改的是第二个泛型
         .request<any, T>(config)
         .then((res) => {
-          // 4.3.2 对单个响应的拦截处理
-          if (config.stInterceptors?.responseInterceptor) {
-            config = config.stInterceptors.responseInterceptor(res)
+          // 1.单个请求对数据的处理
+          if (config.interceptors?.responseInterceptor) {
+            res = config.interceptors.responseInterceptor(res)
           }
+          // 2.将showLoading设置true, 这样不会影响下一个请求
+          this.showLoading = DEAFULT_LOADING
+
+          // 3.将结果resolve返回出去
           resolve(res)
         })
         .catch((err) => {
+          // 将showLoading设置true, 这样不会影响下一个请求
+          this.showLoading = DEAFULT_LOADING
           reject(err)
+          return err
         })
     })
   }
-  // 5. 其他方法封装
-  get<T>(config: STRequestConfig<T>): Promise<T> {
-    return this.request<T>({ ...config, method: 'get' })
+
+  get<T = any>(config: STRequestConfig<T>): Promise<T> {
+    return this.request<T>({ ...config, method: 'GET' })
   }
-  post<T>(config: STRequestConfig<T>): Promise<T> {
-    return this.request<T>({ ...config, method: 'post' })
+
+  post<T = any>(config: any): Promise<T> {
+    return this.request<T>({ ...config, method: 'POST' })
   }
-  delete<T>(config: STRequestConfig<T>): Promise<T> {
-    return this.request<T>({ ...config, method: 'delete' })
+
+  delete<T = any>(config: STRequestConfig<T>): Promise<T> {
+    return this.request<T>({ ...config, method: 'DELETE' })
   }
-  patch<T>(config: STRequestConfig<T>): Promise<T> {
-    return this.request<T>({ ...config, method: 'patch' })
+
+  patch<T = any>(config: STRequestConfig<T>): Promise<T> {
+    return this.request<T>({ ...config, method: 'PATCH' })
   }
 }
-export default STAxios
+
+export default STRequest

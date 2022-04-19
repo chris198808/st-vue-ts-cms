@@ -8,35 +8,13 @@ const searchConfig: IForm = {
       placeholder: '请输入ID'
     },
     {
-      field: 'username',
-      label: '用户名',
+      field: 'name',
+      label: '部门名称',
       typeInfo: 'text',
-      placeholder: '请输入用户名'
+      placeholder: '请输入部门名称'
     },
     {
-      field: 'password',
-      label: '密码',
-      typeInfo: 'password',
-      placeholder: '请输入密码'
-    },
-    {
-      field: 'sport',
-      label: '喜欢的运动',
-      typeInfo: 'select',
-      placeholder: '请选择喜欢的运动',
-      options: [
-        {
-          label: '足球',
-          value: 'footbool'
-        },
-        {
-          label: '蓝球',
-          value: 'basketball'
-        }
-      ]
-    },
-    {
-      field: 'createTime',
+      field: 'createAt',
       label: '创建时间',
       typeInfo: 'datepicker',
       placeholder: '创建时间',

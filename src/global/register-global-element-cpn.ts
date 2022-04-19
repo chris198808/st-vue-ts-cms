@@ -39,7 +39,10 @@ import {
   ElBreadcrumb,
   ElBreadcrumbItem,
   ElTable,
-  ElTableColumn
+  ElTableColumn,
+  ElPagination,
+  ElImage,
+  ElScrollbar
 } from 'element-plus'
 const components = [
   ElButton,
@@ -70,7 +73,10 @@ const components = [
   ElBreadcrumb,
   ElBreadcrumbItem,
   ElTable,
-  ElTableColumn
+  ElTableColumn,
+  ElPagination,
+  ElImage,
+  ElScrollbar
 ]
 export default {
   install(app: App) {

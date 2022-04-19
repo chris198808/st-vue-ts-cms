@@ -5,6 +5,9 @@ import store from './store/index'
 // 全局导入element-plus
 // import ElementPlus from 'element-plus'
 // import 'element-plus/dist/index.css'
+// 全局国际化
+// import ElementPlus from 'element-plus'
+// import zhCn from 'element-plus/es/locale/lang/zh-cn'
 
 //单独引入loading 样式
 import 'element-plus/theme-chalk/el-loading.css'
@@ -29,6 +32,9 @@ import { setupStore } from '@/store'
 // createApp(App).use(router).use(store).use(ElementPlus).mount('#app')
 const app = createApp(App)
 app.use(store)
+// app.use(ElementPlus, {
+//   locale: zhCn
+// })
 // vuex初始化数据：防止用户刷新页面 vuex中的数据丢失， 每次入口函数执行,通过localCatch重新初始化vuex中用户数据
 setupStore()
 app.use(router)

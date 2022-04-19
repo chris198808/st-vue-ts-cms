@@ -19,7 +19,7 @@ export default defineComponent({
   props: {
     breadcrumbs: {
       type: Array as PropType<IBreadCrumb[]>,
-      require
+      required: true
     }
   },
   setup() {

@@ -3,24 +3,24 @@ const searchConfig: IForm = {
   formConfig: [
     {
       field: 'name',
-      label: '用户名',
+      label: '产品名称',
       typeInfo: 'text',
-      placeholder: '请输入用户名'
+      placeholder: '请输入产品名称'
     },
     {
-      field: 'realname',
-      label: '真实姓名',
+      field: 'oldPrice',
+      label: '原价格',
       typeInfo: 'text',
-      placeholder: '请输入真实姓名'
+      placeholder: '请输入原价格'
     },
     {
-      field: 'cellphone',
-      label: '手机号',
+      field: 'newPrice',
+      label: '现价格',
       typeInfo: 'text',
-      placeholder: '请输入手机号'
+      placeholder: '请输入现价格'
     },
     {
-      field: 'enable',
+      field: 'status',
       label: '状态',
       typeInfo: 'select',
       placeholder: '请选择状态',

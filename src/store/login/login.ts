@@ -1,10 +1,9 @@
 import { Module } from 'vuex'
 import router from '@/router'
 import localCache from '@/utils/localCache'
-import { mapMenuToRouter } from '@/utils/map-menu'
-import { IloginState } from './type'
+import { mapMenuToRouter, getBtnPermission } from '@/utils/map-menu'
+import { IloginState, IAccount } from './type'
 import { IRootState } from '../type'
-import { IAccountData } from '@/server/login/type'
 import {
   accountLoginRequest,
   getUserInfo,
@@ -17,7 +16,8 @@ const loginModule: Module<IloginState, IRootState> = {
     return {
       token: '',
       userinfo: {},
-      usermenus: []
+      usermenus: [],
+      btnPermission: []
     }
   },
   getters: {},
@@ -44,6 +44,10 @@ const loginModule: Module<IloginState, IRootState> = {
         // router.addRoute(parentRouterName, route) 添加一条新的路由记录作为现有路由的子路由
         router.addRoute('main', route)
       })
+      // 获取当前用户菜单的所有按钮权限
+      const userPermission = getBtnPermission(usermenus)
+      // 将数据保存至vuex
+      state.btnPermission = userPermission
     }
   },
   actions: {
@@ -53,7 +57,7 @@ const loginModule: Module<IloginState, IRootState> = {
      * 先做用户登录请求，再根据登录成功后得到的token来做用户信息请求，再根据用户信息的id和角色来做对应的菜单信息请求，循序不能出错
      * 2. async函数和await都会返回promise
      */
-    async accountLoginAction(context, payload: IAccountData) {
+    async accountLoginAction(context, payload: IAccount) {
       // 1.发送用户登录请求，请求成功后返回用户相关信息及token
       const accountLoginMess = await accountLoginRequest(payload)
       const { id, token } = accountLoginMess.data

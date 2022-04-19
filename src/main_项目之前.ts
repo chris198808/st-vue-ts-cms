@@ -28,32 +28,3 @@ import '@/assets/css/index.less'
 
 // createApp(App).use(router).use(store).use(ElementPlus).mount('#app')
 createApp(App).use(router).use(store).use(global).mount('#app')
-
-// 自定义返回的数据类型
-type DateType = {
-  data: any
-  returnCode: string
-  success: boolean
-}
-// 对STRequest实例对象.request方法的使用
-stRequest
-  .request<DateType>({
-    url: '/home/multidata',
-    method: 'get',
-    stInterceptors: {
-      requestInterceptor: (config) => {
-        console.log('对某一个requeste请求拦截')
-        return config
-      },
-      responseInterceptor: (res) => {
-        console.log('对某一个response请求拦截')
-        return res
-      }
-    }
-    // isShow: false
-  })
-  .then((res) => {
-    console.log('data: ' + res.data)
-    console.log('returnCode: ' + res.returnCode)
-    console.log('success: ' + res.success)
-  })

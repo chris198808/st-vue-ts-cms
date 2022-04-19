@@ -96,5 +96,25 @@ function getBreadCrumb(usermenu: any[], currentPath: string): any {
   getMenuFormPath(usermenu, currentPath, breadCrumb)
   return breadCrumb
 }
-
-export { getMenuFormPath, mapMenuToRouter, getBreadCrumb, firstPage }
+// (5) 获取当前用户所有的按钮权限
+function getBtnPermission(usermenu: any[]) {
+  const permission: string[] = []
+  function _recursePerssion(usermenu: any[]) {
+    for (const item of usermenu) {
+      if (item.type === 1 || item.type === 2) {
+        _recursePerssion(item.children ?? [])
+      } else if (item.type === 3 && item.permission != null) {
+        permission.push(item.permission)
+      }
+    }
+  }
+  _recursePerssion(usermenu)
+  return permission
+}
+export {
+  getMenuFormPath,
+  mapMenuToRouter,
+  getBreadCrumb,
+  getBtnPermission,
+  firstPage
+}

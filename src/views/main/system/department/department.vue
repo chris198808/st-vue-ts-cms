@@ -1,22 +1,31 @@
 <template>
   <div class="department">
-    <search-page :searchConfig="searchConfig" />
+    <page-search :searchConfig="searchConfig" />
+    <page-content
+      pageName="department"
+      :tableConfig="tableConfig"
+    ></page-content>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import searchConfig from './config/search.config'
-import SearchPage from '@/components/search-page'
+import tableConfig from './config/table.config'
+
+import PageSearch from '@/components/page-search'
+import pageContent from '@/components/page-content'
 
 export default defineComponent({
   name: 'department',
   components: {
-    SearchPage
+    PageSearch,
+    pageContent
   },
   setup() {
     return {
-      searchConfig
+      searchConfig,
+      tableConfig
     }
   }
 })

@@ -19,7 +19,8 @@
                   <el-input
                     type="text"
                     :placeholder="item.placeholder"
-                    v-model="formData[`${item.field}`]"
+                    :modelValue="modelValue[`${item.field}`]"
+                    @update:modelValue="changeValue($event, item.field)"
                   />
                 </template>
                 <!-- 2. password 类型 -->
@@ -28,7 +29,8 @@
                     type="password"
                     :placeholder="item.placeholder"
                     show-password
-                    v-model="formData[`${item.field}`]"
+                    :modelValue="modelValue[`${item.field}`]"
+                    @update:modelValue="changeValue($event, item.field)"
                   />
                 </template>
                 <!-- 3. select 类型 -->
@@ -36,7 +38,8 @@
                   <el-select
                     :placeholder="item.placeholder"
                     style="width: 100%"
-                    v-model="formData[`${item.field}`]"
+                    :modelValue="modelValue[`${item.field}`]"
+                    @update:modelValue="changeValue($event, item.field)"
                   >
                     <el-option
                       v-for="o in item.options"
@@ -52,7 +55,8 @@
                     type="date"
                     v-bind="item.otherProps"
                     style="width: 100%"
-                    v-model="formData[`${item.field}`]"
+                    :modelValue="modelValue[`${item.field}`]"
+                    @update:modelValue="changeValue($event, item.field)"
                   />
                 </template>
               </el-form-item>
@@ -68,12 +72,12 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, watch } from 'vue'
 import { IFormConfig } from '@/base-ui/form/type'
-import { IFormData } from '@/components/search-page/type'
+import { IFormData } from '@/components/page-search/type'
 export default defineComponent({
   props: {
     modelValue: {
       type: Object as PropType<IFormData>,
-      require: true
+      required: true
     },
     formConfig: {
       // as 断言，将数组类型 替换成 IformItemProps[]的数组类型
@@ -103,12 +107,15 @@ export default defineComponent({
   },
   emits: ['update:modelValue'],
   setup(props, { emit }) {
-    const formData = ref({ ...props.modelValue })
-    watch(formData.value, (newValue) => {
-      emit('update:modelValue', newValue)
-    })
+    // const formData = ref({ ...props.modelValue })
+    // watch(formData.value, (newValue) => {
+    //   emit('update:modelValue', newValue)
+    // })
+    const changeValue = (value: string, field: any) => {
+      emit('update:modelValue', { ...props.modelValue, [field]: value })
+    }
     return {
-      formData
+      changeValue
     }
   }
 })

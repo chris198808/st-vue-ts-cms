@@ -1,12 +1,20 @@
 export interface IUserData {
-  userlist: any[]
-  usercounts: number
+  userslist: any[]
+  userscounts: number
+  departmentlist: any[]
+  departmentcounts: number
+  rolelist: any[]
+  rolecounts: number
+  goodslist: any[]
+  goodscounts: number
+  menulist: any[]
+  menucounts: number
 }
-export interface IPaload {
-  url: string
+export interface IPayload {
+  pageName: string
   queryParameters: object
 }
-export interface IUserServerData {
+export interface IUserServerData<T = any> {
   code: number
-  data: any
+  data: T
 }
