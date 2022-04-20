@@ -5,7 +5,7 @@
         <nav-menu :isCollapse="isCollapse" />
       </el-aside>
       <el-container class="page">
-        <el-header>
+        <el-header class="el-header">
           <nav-header @changeFold="changeCollapse" />
         </el-header>
         <div class="page-info">
@@ -53,7 +53,9 @@ export default defineComponent({
 .main-content,
 .page {
   height: 100%;
+  background-color: #f0f2f5;
   .page-info {
+    background: #f0f2f5;
     overflow: scroll;
   }
 }
@@ -71,6 +73,7 @@ export default defineComponent({
 }
 
 .el-header {
+  background: #fff;
   height: 48px !important;
 }
 

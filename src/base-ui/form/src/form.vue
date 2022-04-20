@@ -10,6 +10,7 @@
             <!-- v-bind="layoutStyle" 将对象中的所有属性 绑定到el-col元素上 -->
             <el-col v-bind="layoutStyle">
               <el-form-item
+                v-if="!item.isHidden"
                 :label="item.label"
                 :style="itemStyle"
                 class="el-form-item"
@@ -70,7 +71,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, watch } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { IFormConfig } from '@/base-ui/form/type'
 import { IFormData } from '@/components/page-search/type'
 export default defineComponent({
@@ -125,9 +126,9 @@ export default defineComponent({
 .form {
   width: 100%;
   .search {
-    background-color: #f4f4f7;
-    margin: 0 10px;
-    padding-top: 22px;
+    background-color: #fff;
+    margin: 0 0 10px 10px;
+    padding-top: 10px;
     border-radius: 5px;
     .el-form {
       display: flex;

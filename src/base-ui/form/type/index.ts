@@ -11,6 +11,8 @@ export interface IFormConfig {
   // 针对特殊的属性
   //如datepicker，start - placehoder, end - placehorder, type = daterange的配合使用
   otherProps?: any
+  // 是否单独控制显示或隐藏属性 如：新建用户 需要显示添加密码，修改用户 不需要显示修改密码
+  isHidden?: boolean
 }
 export interface IForm {
   formConfig: IFormConfig[]

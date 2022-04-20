@@ -120,7 +120,7 @@ class STRequest {
     return this.request<T>({ ...config, method: 'DELETE' })
   }
 
-  patch<T = any>(config: STRequestConfig<T>): Promise<T> {
+  patch<T = any>(config: any): Promise<T> {
     return this.request<T>({ ...config, method: 'PATCH' })
   }
 }

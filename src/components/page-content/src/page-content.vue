@@ -7,7 +7,9 @@
       v-model:pageInfo="pageInfo"
     >
       <template #handle-btns>
-        <el-button v-if="isCreate" type="primary">新增</el-button>
+        <el-button v-if="isCreate" type="primary" @click="handleCreate"
+          >新增</el-button
+        >
         <el-button type="text" :icon="Refresh">刷新</el-button>
         <el-icon class="el-icon-edit" />
       </template>
@@ -25,9 +27,21 @@
       <template #updateAt="scope">
         {{ $filter.formateUtc(scope.row.updateAt) }}
       </template>
-      <template #handle>
-        <el-button v-if="isUpdate" type="text" :icon="Edit">编辑</el-button>
-        <el-button v-if="isDelete" type="text" :icon="Delete">删除</el-button>
+      <template #handle="scope">
+        <el-button
+          v-if="isUpdate"
+          type="text"
+          :icon="Edit"
+          @click="handleEdit(scope.row)"
+          >编辑</el-button
+        >
+        <el-button
+          v-if="isDelete"
+          type="text"
+          :icon="Delete"
+          @click="handleDelete(scope.row)"
+          >删除</el-button
+        >
       </template>
 
       <!-- 自动添加动态插槽 -->
@@ -55,20 +69,21 @@ import { Refresh, Delete, Edit } from '@element-plus/icons-vue'
 import usePermission from '@/hooks/use-permission'
 
 export default defineComponent({
-  props: {
-    pageName: {
-      type: String,
-      require: true
-    },
-    tableConfig: {
-      type: Object,
-      require: true
-    }
-  },
   components: {
     StTable
   },
-  setup(props) {
+  emits: ['handleCreateClick', 'handleEditClick'],
+  props: {
+    pageName: {
+      type: String,
+      required: true
+    },
+    tableConfig: {
+      type: Object,
+      required: true
+    }
+  },
+  setup(props, { emit }) {
     const store = useStore()
     // 0.获取权限
     const isCreate = usePermission(props.pageName, 'create')
@@ -77,7 +92,6 @@ export default defineComponent({
     const isQuery = usePermission(props.pageName, 'query')
     // 1.双向绑定pageInfo
     const pageInfo = ref({ currentPage: 1, pageSize: 10 })
-    console.log(pageInfo.value)
     watch(pageInfo, () => getPageDataLists())
     // 2.发送网络请求
     const getPageDataLists = (queryParams: any = {}) => {
@@ -101,7 +115,7 @@ export default defineComponent({
       return store.getters['system/getDataCounts'](props.pageName)
     })
     // 4.动态插槽数据收集
-    const otherSlots = props.tableConfig.tableData.filter((item) => {
+    const otherSlots = props.tableConfig.tableData.filter((item: any) => {
       // 固定插槽
       if (item.slotName === 'status') return false
       if (item.slotName === 'createAt') return false
@@ -109,6 +123,19 @@ export default defineComponent({
       if (item.slotName === 'handle') return false
       return true
     })
+
+    // 5.处理删除/新增/编辑操作
+    const handleDelete = (item: any) => {
+      const payload = { pageName: props.pageName, id: item.id }
+      console.log(payload)
+      store.dispatch('system/deleteDataListAction', payload)
+    }
+    const handleCreate = () => {
+      emit('handleCreateClick')
+    }
+    const handleEdit = (item: any) => {
+      emit('handleEditClick', item)
+    }
 
     return {
       datalists,
@@ -123,10 +150,21 @@ export default defineComponent({
       // 按钮使用权限导出
       isCreate,
       isDelete,
-      isUpdate
+      isUpdate,
+      // 删除，新增，修改操作
+      handleDelete,
+      handleCreate,
+      handleEdit
     }
   }
 })
 </script>
 
-<style scoped></style>
+<style lang="less" scoped>
+.page-content {
+  background-color: #fff;
+  padding: 4px 0 10px 0;
+  border-radius: 5px;
+  margin: 0 10px;
+}
+</style>

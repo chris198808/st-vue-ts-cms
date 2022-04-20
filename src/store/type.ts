@@ -1,3 +1,4 @@
 export interface IRootState {
-  name: string
+  allDepartment: any[]
+  allRole: any[]
 }

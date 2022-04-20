@@ -42,7 +42,8 @@ import {
   ElTableColumn,
   ElPagination,
   ElImage,
-  ElScrollbar
+  ElScrollbar,
+  ElDialog
 } from 'element-plus'
 const components = [
   ElButton,
@@ -76,7 +77,8 @@ const components = [
   ElTableColumn,
   ElPagination,
   ElImage,
-  ElScrollbar
+  ElScrollbar,
+  ElDialog
 ]
 export default {
   install(app: App) {

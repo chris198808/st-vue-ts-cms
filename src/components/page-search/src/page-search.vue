@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, Ref, ref } from 'vue'
+import { defineComponent, ref } from 'vue'
 import StForm from '@/base-ui/form'
 export default defineComponent({
   emits: ['handleResetClick', 'handleSearchClick'],
@@ -65,9 +65,11 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
+.search-page {
+  margin: 10px 10px 10px 0;
+}
 .title {
   text-align: center;
-  padding: 0 0 10px;
 }
 .other {
   padding: 0 20px 20px 0;

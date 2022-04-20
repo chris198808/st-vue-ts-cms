@@ -8,7 +8,12 @@
     </div>
     <!-- :data="userlists" 显示的数据 -->
     <!--el-table-column 中三个属性： prop-数据中对应要读取的字段，label-表头显示的字段，minWidth-最小宽度 -->
-    <el-table :data="userlists" style="width: 100%" v-bind="isShowTreeMenu">
+    <el-table
+      :data="userlists"
+      style="width: 100%"
+      v-bind="isShowTreeMenu"
+      border="true"
+    >
       <el-table-column
         v-if="isShowSelection"
         type="selection"
@@ -129,6 +134,7 @@ export default defineComponent({
     display: flex;
     justify-content: space-between;
     width: 100%;
+    padding-bottom: 16px;
     .title {
       font-size: 20px;
       font-weight: 800;
