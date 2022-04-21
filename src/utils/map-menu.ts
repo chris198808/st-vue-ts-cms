@@ -111,10 +111,26 @@ function getBtnPermission(usermenu: any[]) {
   _recursePerssion(usermenu)
   return permission
 }
+// (6) 获取所有叶子节点
+function getLeafNodes(usermenu: any[]) {
+  const leafNods: number[] = []
+  function _recuresLeafNode(menus: any[]) {
+    for (const item of menus) {
+      if (item.children) {
+        _recuresLeafNode(item.children)
+      } else {
+        leafNods.push(item.id)
+      }
+    }
+  }
+  _recuresLeafNode(usermenu)
+  return leafNods
+}
 export {
   getMenuFormPath,
   mapMenuToRouter,
   getBreadCrumb,
   getBtnPermission,
+  getLeafNodes,
   firstPage
 }

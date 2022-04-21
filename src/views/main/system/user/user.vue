@@ -14,7 +14,7 @@
     ></page-content>
     <page-modal
       pageName="users"
-      :modalConfig="modalConfig"
+      :modalConfig="modelConfigRef"
       :defaultInit="defaultInit"
       ref="pageModalRef"
     />
@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
 import searchConfig from './config/search.config'
 import tableConfig from './config/table.config'
@@ -69,22 +69,26 @@ export default defineComponent({
     }
 
     // 3.动态展示部门和角色
-    const departmentItem = modalConfig.formConfig.find((item) => {
-      return item.field === 'departmentId'
-    })
-    const store = useStore()
-    const allDepartmentList = store.state.allDepartment
-    // map:在每次迭代后会返回一个形式为[key，value]的数组
-    departmentItem!.options = allDepartmentList.map((item) => {
-      return { label: item.name, value: item.id }
-    })
+    const modelConfigRef = computed(() => {
+      const departmentItem = modalConfig.formConfig.find((item) => {
+        return item.field === 'departmentId'
+      })
+      const store = useStore()
+      const allDepartmentList = store.state.allDepartment
+      // map:在每次迭代后会返回一个形式为[key，value]的数组
+      departmentItem!.options = allDepartmentList.map((item: any) => {
+        return { label: item.name, value: item.id }
+      })
 
-    const roleItem = modalConfig.formConfig.find((item) => {
-      return item.field === 'roleId'
-    })
-    const allRoleList = store.state.allRole
-    roleItem!.options = allRoleList.map((item) => {
-      return { label: item.name, value: item.id }
+      const roleItem = modalConfig.formConfig.find((item) => {
+        return item.field === 'roleId'
+      })
+      const allRoleList = store.state.allRole
+      roleItem!.options = allRoleList.map((item: any) => {
+        return { label: item.name, value: item.id }
+      })
+
+      return modalConfig
     })
 
     const [pageModalRef, defaultInit, handleCreate, handleEdit] = usePageModal(
@@ -95,6 +99,7 @@ export default defineComponent({
       searchConfig,
       tableConfig,
       modalConfig,
+      modelConfigRef,
 
       pageContentRef,
       handleReset,

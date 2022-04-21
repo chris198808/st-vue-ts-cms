@@ -6,7 +6,7 @@ import { firstPage } from '@/utils/map-menu'
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/login'
+    redirect: '/main'
   },
   {
     path: '/login',

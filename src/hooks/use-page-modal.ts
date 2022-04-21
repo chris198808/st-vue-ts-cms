@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import PageModal from '@/components/page-modal'
-type cellBackFn = () => void
+type cellBackFn = (item?: any) => void
 function usePageModal(createFn?: cellBackFn, updateFn?: cellBackFn) {
   const pageModalRef = ref<InstanceType<typeof PageModal>>()
   const defaultInit: any = ref({})
@@ -18,7 +18,8 @@ function usePageModal(createFn?: cellBackFn, updateFn?: cellBackFn) {
     if (pageModalRef.value) {
       pageModalRef.value.centerDialogVisible = true
     }
-    updateFn && updateFn()
+    // 可以将当前行的信息再传回去
+    updateFn && updateFn(item)
   }
 
   return [pageModalRef, defaultInit, handleCreate, handleEdit]

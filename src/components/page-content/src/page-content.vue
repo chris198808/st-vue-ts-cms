@@ -131,9 +131,11 @@ export default defineComponent({
       store.dispatch('system/deleteDataListAction', payload)
     }
     const handleCreate = () => {
+      console.log('点击了新增')
       emit('handleCreateClick')
     }
     const handleEdit = (item: any) => {
+      console.log('点击了编辑')
       emit('handleEditClick', item)
     }
 

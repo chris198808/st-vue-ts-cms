@@ -8,7 +8,8 @@ const store = createStore<IRootState>({
   state() {
     return {
       allDepartment: [],
-      allRole: []
+      allRole: [],
+      allMenu: []
     }
   },
   getters: {},
@@ -18,10 +19,13 @@ const store = createStore<IRootState>({
     },
     changeRoleList(state, list) {
       state.allRole = list
+    },
+    changeMenuList(state, list) {
+      state.allMenu = list
     }
   },
   actions: {
-    async getDepartmentAndRoleDataAction(context) {
+    async getInitDataAction(context) {
       const departmentData = await getPagelist('/department/list', {
         offset: 0,
         size: 1000
@@ -30,12 +34,15 @@ const store = createStore<IRootState>({
         offset: 0,
         size: 1000
       })
+      const menuData = await getPagelist('/menu/list', {})
       // { list: departmentList } 给结构的对象起别名
       const { list: departmentList } = departmentData.data
       const { list: roleList } = roleData.data
+      const { list: menuList } = menuData.data
 
       context.commit('changeDepartmentList', departmentList)
       context.commit('changeRoleList', roleList)
+      context.commit('changeMenuList', menuList)
     }
   },
   modules: {
@@ -47,6 +54,6 @@ const store = createStore<IRootState>({
 // 初始化store防止用户刷新后vuex中的数据丢失
 export function setupStore() {
   store.dispatch('loginModule/localStore')
-  store.dispatch('getDepartmentAndRoleDataAction')
+  store.dispatch('getInitDataAction')
 }
 export default store

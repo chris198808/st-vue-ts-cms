@@ -7,6 +7,7 @@
       center
     >
       <st-form v-bind="modalConfig" v-model="formData"> </st-form>
+      <slot></slot>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="centerDialogVisible = false">取消</el-button>
@@ -38,11 +39,15 @@ export default defineComponent({
     defaultInit: {
       type: Object,
       default: () => ({})
+    },
+    otherInfo: {
+      type: Object,
+      default: () => ({})
     }
   },
   setup(props) {
     const centerDialogVisible = ref(false)
-    const formData = ref({})
+    const formData = ref<any>({})
     const store = useStore()
     // 动态的将modalConfig中的field字段对应的value和defaultInit拿到的整行的信息进行匹配整合
     // modal.config 和 table.config [fleid字段和prop字段的对应]
@@ -61,6 +66,7 @@ export default defineComponent({
     const handleData = () => {
       // 关闭dialog
       console.log('handleData')
+      console.log(props.defaultInit)
       centerDialogVisible.value = false
       // Object.keys 对象中所有的key
       if (Object.keys(props.defaultInit).length) {
@@ -68,7 +74,7 @@ export default defineComponent({
         // 发送修改请求 /user/id
         const payload = {
           pageName: props.pageName,
-          updateData: { ...formData.value },
+          updateData: { ...formData.value, ...props.otherInfo },
           id: props.defaultInit.id
         }
         store.dispatch('system/updateDataAction', payload)
@@ -78,10 +84,11 @@ export default defineComponent({
         // 发送保存请求 /user
         const payload = {
           pageName: props.pageName,
-          newData: { ...formData.value }
+          newData: { ...formData.value, ...props.otherInfo }
         }
         store.dispatch('system/createDataAction', payload)
         console.log('新增')
+        console.log(payload)
       }
     }
     return {

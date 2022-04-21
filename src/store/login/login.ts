@@ -76,6 +76,8 @@ const loginModule: Module<IloginState, IRootState> = {
       // console.log(userinfo)
       // 2.2将数据保存至vuex
       context.commit('saveUserInfo', userinfo.data)
+      // 2.3初始化所有部门和角色
+      context.dispatch('getInitDataAction', null, { root: true })
 
       // 3.发送用户角色菜单请求，请求成功后返回用户对应角色下的所有菜单
       const usermenus = await getUserRoles(id)
@@ -83,7 +85,6 @@ const loginModule: Module<IloginState, IRootState> = {
       localCache.setLocalStorage('usermenus', usermenus.data)
       // 3.2将数据保存至vuex
       context.commit('saveUserMenus', usermenus.data)
-
       // 4.跳转至首页
       router.push('/main')
     },
@@ -92,6 +93,8 @@ const loginModule: Module<IloginState, IRootState> = {
       const token = localCache.getLocalStorage('token')
       if (token) {
         context.commit('initToken', token)
+        // 2.3初始化所有部门和角色
+        context.dispatch('getInitDataAction', null, { root: true })
       }
       const userinfo = localCache.getLocalStorage('userinfo')
       if (userinfo) {

@@ -7,7 +7,7 @@
           size="small"
           src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
         />
-        Stone
+        {{ name }}
         <el-icon class="el-icon--right">
           <arrow-down />
         </el-icon>
@@ -18,7 +18,9 @@
           <el-dropdown-item>Action 2</el-dropdown-item>
           <el-dropdown-item>Action 3</el-dropdown-item>
           <el-dropdown-item disabled>Action 4</el-dropdown-item>
-          <el-dropdown-item divided>Action 5</el-dropdown-item>
+          <el-dropdown-item divided @click="handleExit"
+            >退出登录</el-dropdown-item
+          >
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -26,11 +28,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
+import LocalCache from '@/utils/localCache'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   setup() {
-    return {}
+    const store = useStore()
+    const router = useRouter()
+    const name = computed(() => {
+      return store.state.loginModule.userinfo.name
+    })
+    const handleExit = () => {
+      // 删除token
+      LocalCache.deleteLocalStorage('token')
+      // 跳转到main，通过导航守卫进行判断，跳转到login
+      router.push('/main')
+    }
+    return {
+      name,
+      handleExit
+    }
   }
 })
 </script>
