@@ -44,7 +44,8 @@ import {
   ElImage,
   ElScrollbar,
   ElDialog,
-  ElTree
+  ElTree,
+  ElCard
 } from 'element-plus'
 const components = [
   ElButton,
@@ -80,7 +81,8 @@ const components = [
   ElImage,
   ElScrollbar,
   ElDialog,
-  ElTree
+  ElTree,
+  ElCard
 ]
 export default {
   install(app: App) {
