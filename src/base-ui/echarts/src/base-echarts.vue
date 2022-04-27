@@ -5,9 +5,9 @@
 </template>
 
 <script lang="ts" setup>
-import * as echarts from 'echarts'
-import { ref, onMounted, defineProps, withDefaults } from 'vue'
+import { ref, onMounted, defineProps, withDefaults, watchEffect } from 'vue'
 import { EChartsOption } from 'echarts'
+import useEcharts from '../hooks/use-echarts'
 // script setup 下面定义props及默认值
 const props = withDefaults(
   defineProps<{ options: EChartsOption; width?: string; height?: string }>(),
@@ -19,10 +19,11 @@ const props = withDefaults(
 const divRef = ref<HTMLElement>()
 
 onMounted(() => {
-  const echartInstance = echarts.init(divRef.value!)
-  console.log(echartInstance)
+  const { setOption } = useEcharts(divRef.value!)
 
-  echartInstance.setOption(props.options)
+  watchEffect(() => {
+    setOption(props.options)
+  })
 })
 </script>
 

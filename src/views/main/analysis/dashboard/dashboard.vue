@@ -4,24 +4,32 @@
       <el-row :gutter="5">
         <el-col :span="7">
           <st-card title="分类商品数量(饼图)">
-            <st-echarts :options="options"></st-echarts>
+            <pie-echart :option="pieOption" name="分类商品数量"></pie-echart>
           </st-card>
         </el-col>
         <el-col :span="10">
-          <st-card title="不同城市商品销量"></st-card>
+          <st-card title="不同城市商品销量">
+            <map-echart :mapData="mapData" />
+          </st-card>
         </el-col>
         <el-col :span="7">
-          <st-card title="分类商品数量(玫瑰图)"></st-card>
+          <st-card title="分类商品数量(玫瑰图)">
+            <rose-echart :option="pieOption" name="分类商品数量"></rose-echart>
+          </st-card>
         </el-col>
       </el-row>
     </div>
     <div class="row2">
       <el-row :gutter="5">
         <el-col :span="12">
-          <st-card title="分类商品数量(饼图)"></st-card>
+          <st-card title="分类商品销量">
+            <line-echart :name="names" :value="values"
+          /></st-card>
         </el-col>
         <el-col :span="12">
-          <st-card title="分类商品数量(饼图)"></st-card>
+          <st-card title="分类商品数量(饼图)">
+            <bar-echart :name="barNames" :value="barValues" />
+          </st-card>
         </el-col>
       </el-row>
     </div>
@@ -29,37 +37,62 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
 import StCard from '@/base-ui/card'
-import StEcharts from '@/base-ui/echarts'
+import {
+  PieEchart,
+  RoseEchart,
+  LineEchart,
+  BarEchart,
+  MapEchart
+} from '@/components/page-echarts'
 export default defineComponent({
   name: 'dashboard',
   components: {
     StCard,
-    StEcharts
+    PieEchart,
+    RoseEchart,
+    LineEchart,
+    BarEchart,
+    MapEchart
   },
   setup() {
     const store = useStore()
     store.dispatch('dashboard/getGoodsDataAction')
-    const options = {
-      title: {
-        text: 'ECharts 入门示例'
-      },
-      tooltip: {},
-      xAxis: {
-        data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-      },
-      yAxis: {},
-      series: [
-        {
-          name: '销量',
-          type: 'bar',
-          data: [5, 20, 36, 10, 10, 20]
-        }
-      ]
+    // 1.获取数据
+    const goodsCategoryCounts = computed(() => {
+      return store.state.dashboard.goodsCategoryCount
+    })
+    const goodsCategorySales = computed(() => {
+      return store.state.dashboard.goodsCategorySale
+    })
+    const goodsCategoryFavors = computed(() => {
+      return store.state.dashboard.goodsCategoryFavor
+    })
+    const goodsAddressSales = computed(() => {
+      return store.state.dashboard.goodsAddressSale
+    })
+    // 2.根据option所属数据类型拼接数据
+    const pieOption = goodsCategoryCounts.value.map((element: any) => {
+      return { name: element.name, value: element.goodsCount }
+    })
+    const names = []
+    const values = []
+    for (const item of goodsCategorySales.value) {
+      names.push(item.name)
+      values.push(item.goodsCount)
     }
-    return { options }
+    const barNames = []
+    const barValues = []
+    for (const item of goodsCategoryFavors.value) {
+      barNames.push(item.name)
+      barValues.push(item.goodsFavor)
+    }
+    const mapData = goodsAddressSales.value.map((item: any) => {
+      return { name: item.address, value: item.count }
+    })
+    return { pieOption, names, values, barNames, barValues, mapData }
   }
 })
 </script>
